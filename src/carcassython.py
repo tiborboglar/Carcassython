@@ -17,11 +17,57 @@ class Carcassython:
         """ The initial board is going to be a 2d array"""
         raise NotImplementedError
 
-    def add_tile(self, x, y):
+    def draw_tile(self):
+        # just testing with an arbitrary tile
+        tile = Castle(x=-1, y=-1, owner=-1)
+        return tile
+
+    def place_tile(self, x, y, tile):
         # suppose it is a castle
-        castle = Castle(x, y, owner=None, pennant=False)
-        self.cur_board[x, y] = castle
-        return castle
+        # tile = Castle(x, y, owner=None, pennant=False)
+        # if self.can_connect(tile):
+        #    self.cur_board[x, y] = tile
+        # else:
+        #    raise ValueError('The tiles cannot connect')
+        self.cur_board[x, y] = tile
+
+        # expanding the board if tile is placed in the border
+        if x == 0 and y == 0:
+            self.cur_board = np.pad(self.cur_board, ((1, 0), (1, 0)), 'constant', constant_values=np.nan)
+        elif x == 0 and y == self.cur_board.shape[1] - 1:
+            self.cur_board = np.pad(self.cur_board, ((1, 0), (0, 1)), 'constant', constant_values=np.nan)
+        elif x == self.cur_board.shape[0] - 1 and y == 0:
+            self.cur_board = np.pad(self.cur_board, ((0, 1), (1, 0)), 'constant', constant_values=np.nan)
+        elif x == self.cur_board.shape[0] - 1 and y == self.cur_board.shape[1] - 1:
+            self.cur_board = np.pad(self.cur_board, ((0, 1), (0, 1)), 'constant', constant_values=np.nan)
+        elif x == 0:
+            self.cur_board = np.pad(self.cur_board, ((1, 0), (0, 0)), 'constant', constant_values=np.nan)
+        elif x == self.cur_board.shape[0] - 1:
+            self.cur_board = np.pad(self.cur_board, ((0, 1), (0, 0)), 'constant', constant_values=np.nan)
+        elif y == 0:
+            self.cur_board = np.pad(self.cur_board, ((0, 0), (1, 0)), 'constant', constant_values=np.nan)
+        elif y == self.cur_board.shape[1] - 1:
+            self.cur_board = np.pad(self.cur_board, ((0, 0), (0, 1)), 'constant', constant_values=np.nan)
+
+        return tile
+
+    def can_connect(self, x, y, tile):
+        """tells whether the connection is valid or not"""
+        # Checking if neighbour tiles are not empty
+        neighbours = {'left': np.nan, 'up': np.nan, 'right': np.nan, 'below': np.nan}
+        if ~np.isnan(self.cur_board[x, y - 1]):
+            neighbours['left'] = self.cur_board[x, y - 1]
+        if ~np.isnan(self.cur_board[x, y + 1]):
+            neighbours['right'] = self.cur_board[x, y + 1]
+        if ~np.isnan(self.cur_board[x - 1, y]):
+            neighbours['up'] = self.cur_board[x, y + 1]
+        if ~np.isnan(self.cur_board[x + 1, y]):
+            neighbours['down'] = self.cur_board[x + 1, y]
+
+        raise NotImplementedError
+
+    def place_meeple(self, x, y, tile):
+        raise NotImplementedError
 
     def update_game_state(self):
         raise NotImplementedError
@@ -31,7 +77,15 @@ class Carcassython:
         print(self.cur_board)
 
 
-game = Carcassython()
+# debugging
+game = Carcassython(num_of_players=2)
 game.view_board()
-game.add_tile(1, 1)
+tile = game.draw_tile()
+game.place_tile(1, 1, tile)
+game.view_board()
+game.place_tile(1, 2, tile)
+game.view_board()
+game.place_tile(1,0, tile)
+game.view_board()
+game.place_tile(0,0, tile)
 game.view_board()
