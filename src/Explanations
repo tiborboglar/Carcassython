@@ -1,0 +1,12 @@
+All `Tiles` will have the following attributes:
+(x, y, owner, rotation, connections)
+x, y: represent the position of the tile inside the board
+owner: who placed a meeple into that tile
+rotation: 1 - 0º, 2 - 90º, 3 - 180º, 4 - 270º
+connections: represents which type of connections are possible
+             for example: 'castle_A_3_pieces.PNG': ['C', 'C', 'F', 'C']
+             where: C = Castle, F = Field
+
+Rotations and Connections - How does it work together? Example with `castle_A_3_pieces.PNG`
+* Rotation = 1, then connections = ['C', 'C', 'F', 'C']
+* Rotation = 2,
