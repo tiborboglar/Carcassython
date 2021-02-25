@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from tiles import Castle
 
 NUMBER_OF_PLAYER = 2  # currently not supporting more than 2 players
@@ -15,6 +16,7 @@ class Carcassython:
 
     def initialize_board(self):
         """ The initial board is going to be a 2d array"""
+        # I could initialize the board as a 71x71 sparse matrix
         raise NotImplementedError
 
     def draw_tile(self):
@@ -31,10 +33,13 @@ class Carcassython:
         #    self.cur_board[x, y] = tile
         # else:
         #    raise ValueError('The tiles cannot connect')
+        self.__expand_board(x, y)
+
         tile.x, tile.y = x, y
+
         self.cur_board[x, y] = tile
         if self.can_connect(tile):
-            self.__expand_board(x,y)
+           print('heyho')
         else:
             raise ValueError('Tile placed incorrectly')
         return tile
@@ -62,17 +67,26 @@ class Carcassython:
 
     def can_connect(self, tile):
         """tells whether the connection is valid or not"""
-        # Checking if neighbour tiles are not empty
         x, y = tile.x, tile.y
-        neighbours = {'left': np.nan, 'up': np.nan, 'right': np.nan, 'below': np.nan}
-        if ~np.isnan(self.cur_board[x, y - 1]):
-            neighbours['left'] = self.cur_board[x, y - 1]
-        if ~np.isnan(self.cur_board[x, y + 1]):
-            neighbours['right'] = self.cur_board[x, y + 1]
-        if ~np.isnan(self.cur_board[x - 1, y]):
-            neighbours['up'] = self.cur_board[x, y + 1]
-        if ~np.isnan(self.cur_board[x + 1, y]):
-            neighbours['down'] = self.cur_board[x + 1, y]
+
+        neighbours = {'left': [], 'up': [], 'right': [], 'down': []}
+
+        # Checking if neighbour tiles are not empty
+        if ~pd.isnull(self.cur_board[x, y - 1]): #left
+            neighbours['left'].append(self.cur_board[x, y - 1])
+            tile.neighbours['left'].append(self.cur_board[x, y - 1])
+        if ~pd.isnull(self.cur_board[x, y + 1]): #right
+            neighbours['right'].append(self.cur_board[x, y + 1])
+            tile.neighbours['right'].append(self.cur_board[x, y + 1])
+        if ~pd.isnull(self.cur_board[x - 1, y]): #up
+            neighbours['up'].append(self.cur_board[x - 1, y])
+            tile.neighbours['up'].append(self.cur_board[x - 1, y])
+        if ~pd.isnull(self.cur_board[x + 1, y]): #down
+            neighbours['down'].append(self.cur_board[x + 1, y])
+            tile.neighbours['down'].append(self.cur_board[x + 1, y])
+
+        #todo: iteratively look the neighbours of all neighbours
+        # in order to see if everything is complete
 
         return False
 
@@ -91,11 +105,22 @@ class Carcassython:
 
 # debugging
 game = Carcassython(num_of_players=2)
-game.view_board()
 tile = game.draw_tile()
+tile2 = game.draw_tile()
+tile2.rotation = 3
+game.cur_board = np.array([
+    [np.nan, np.nan, tile2],
+    [np.nan, tile, np.nan],
+    [np.nan, np.nan, np.nan]
+    ])
+
+game.view_board()
+print(tile.neighbours)
 print('Connections available for the tile drawn:', tile.connections)
 
-game.place_tile(1, 1, tile)
-game.view_board()
-game.place_tile(1, 2, tile)
-game.view_board()
+game.place_tile(1,2, tile)
+
+#game.place_tile(1, 1, tile)
+#game.view_board()
+#game.place_tile(1, 2, tile)
+#game.view_board()

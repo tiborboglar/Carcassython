@@ -48,6 +48,7 @@ class Castle(Tile):
         self.rotation = rotation
         self.pennant = pennant
         self.castle_type = castle_type
+        self.neighbours = {'left':[], 'right':[], 'up':[], 'down':[]}
         if self.castle_type == 'castle_A':
             self.connections = np.array(['C', 'C', 'F', 'C'])
 
