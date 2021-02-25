@@ -52,6 +52,7 @@ class Castle(Tile):
             self.connections = np.array(['C', 'C', 'F', 'C'])
 
         self.connections = np.roll(self.connections, shift=rotation-1)
+
     def __repr__(self):
         return 'Castle'
 
