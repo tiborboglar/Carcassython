@@ -18,8 +18,9 @@ class Carcassython:
         raise NotImplementedError
 
     def draw_tile(self):
-        # just testing with an arbitrary tile
-        tile = Castle(x=-1, y=-1, owner=-1)
+        # just testing with an arbitrary
+        tile_type = 'castle_A'
+        tile = Castle(x=-1, y=-1, rotation=1, owner=-1, castle_type=tile_type)
         return tile
 
     def place_tile(self, x, y, tile):
@@ -67,6 +68,8 @@ class Carcassython:
         raise NotImplementedError
 
     def place_meeple(self, x, y, tile):
+        # i dont think we need (x,y) here, since we
+        # just played the tile and know its position
         raise NotImplementedError
 
     def update_game_state(self):
@@ -81,11 +84,8 @@ class Carcassython:
 game = Carcassython(num_of_players=2)
 game.view_board()
 tile = game.draw_tile()
+print(tile.connections)
 game.place_tile(1, 1, tile)
 game.view_board()
 game.place_tile(1, 2, tile)
-game.view_board()
-game.place_tile(1,0, tile)
-game.view_board()
-game.place_tile(0,0, tile)
 game.view_board()

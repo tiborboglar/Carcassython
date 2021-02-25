@@ -27,7 +27,7 @@ class Tile:
 
 
 class Castle(Tile):
-    def __init__(self, x, y, owner=-1, rotation=1, pennant=False):
+    def __init__(self, x, y, castle_type, owner=-1, rotation=1, pennant=False):
         """ Default class for all tiles
         :param x: Horizontal position of tile
         :param y: Vertical position of tile
@@ -47,9 +47,11 @@ class Castle(Tile):
         self.owner = owner
         self.rotation = rotation
         self.pennant = pennant
-        self.connections = np.array(['C', 'C', 'F', 'C'])
+        self.castle_type = castle_type
+        if self.castle_type == 'castle_A':
+            self.connections = np.array(['C', 'C', 'F', 'C'])
 
-
+        self.connections = np.roll(self.connections, shift=rotation-1)
     def __repr__(self):
         return 'Castle'
 
