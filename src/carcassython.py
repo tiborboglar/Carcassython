@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from tiles import Castle
 
 NUMBER_OF_PLAYER = 2  # currently not supporting more than 2 players
@@ -29,6 +30,7 @@ class Carcassython:
         tile = Castle(x=-1, y=-1, rotation=rotation, owner=-1, castle_type=tile_type)
         return tile
 
+
     def place_tile(self, x, y, tile):
         # suppose it is a castle
         # tile = Castle(x, y, owner=None, pennant=False)
@@ -46,29 +48,6 @@ class Carcassython:
 
         return tile
 
-
-    # def __expand_board(self, x, y):
-    #     #todo: return a flag to verify if the board was expanded
-    #     # if it was, we have to adequate the (x,y) placement of the tile onto our new current board
-    #     """ pads the board when a tile is in the border """
-    #     if x == 0 and y == 0:
-    #         self.cur_board = np.pad(self.cur_board, ((1, 0), (1, 0)), 'constant', constant_values=np.nan)
-    #     elif x == 0 and y == self.cur_board.shape[1] - 1:
-    #         self.cur_board = np.pad(self.cur_board, ((1, 0), (0, 1)), 'constant', constant_values=np.nan)
-    #     elif x == self.cur_board.shape[0] - 1 and y == 0:
-    #         self.cur_board = np.pad(self.cur_board, ((0, 1), (1, 0)), 'constant', constant_values=np.nan)
-    #     elif x == self.cur_board.shape[0] - 1 and y == self.cur_board.shape[1] - 1:
-    #         self.cur_board = np.pad(self.cur_board, ((0, 1), (0, 1)), 'constant', constant_values=np.nan)
-    #     elif x == 0:
-    #         self.cur_board = np.pad(self.cur_board, ((1, 0), (0, 0)), 'constant', constant_values=np.nan)
-    #     elif x == self.cur_board.shape[0] - 1:
-    #         self.cur_board = np.pad(self.cur_board, ((0, 1), (0, 0)), 'constant', constant_values=np.nan)
-    #     elif y == 0:
-    #         self.cur_board = np.pad(self.cur_board, ((0, 0), (1, 0)), 'constant', constant_values=np.nan)
-    #     elif y == self.cur_board.shape[1] - 1:
-    #         self.cur_board = np.pad(self.cur_board, ((0, 0), (0, 1)), 'constant', constant_values=np.nan)
-    #     else:
-    #         return
 
     def can_connect(self, tile):
         """tells whether the connection is valid or not"""
@@ -122,7 +101,6 @@ class Carcassython:
             # to implement the verification of closeness
             # for n in neighbours[direction]:
 
-
         return False
 
     def place_meeple(self, x, y, tile):
@@ -136,19 +114,36 @@ class Carcassython:
     def view_board(self):
         print('- Current board visualization -')
         print(pd.DataFrame(self.cur_board))
+        # fig, ax = plt.subplots(self.cur_board)
+        # plt.plot()
+        fig, ax = plt.subplots(game.cur_board.shape[0], game.cur_board.shape[1])
+        game_board = game.cur_board
+        for i in range(game_board.shape[0]):
+            for j in range(game_board.shape[1]):
+                if pd.isnull(game_board[i][j]):
+                    img = plt.imread('./resources/images/filler.png')
+                else:
+                    tile_filepath = self.cur_board[i][j].image_fp
+                    img = plt.imread(tile_filepath)
+                ax[i][j].imshow(img)
+                ax[i][j].axis('off')
+        plt.subplots_adjust(wspace=-0.6, hspace=0)
+        plt.show()
 
 
 # debugging
 game = Carcassython(num_of_players=2)
-game.view_board()
+# game.view_board()
 tile = game.draw_tile(rotation=1)
 game.place_tile(1, 1, tile)
 tile2 = game.draw_tile(rotation=2)
-game.view_board()
+# game.view_board()
 game.place_tile(1, 2, tile2)
 game.view_board()
 
-game.place_tile(0, 2, tile2)
-game.view_board()
+# game.place_tile(0, 2, tile2)
+# game.view_board()
 
-game.place_tile(0,3, tile2)
+# game.place_tile(0,3, tile2)
+
+# print(game_board[0][0] == np.nan)

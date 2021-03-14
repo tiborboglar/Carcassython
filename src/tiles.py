@@ -51,8 +51,12 @@ class Castle(Tile):
         self.neighbours = {'left':[], 'right':[], 'up':[], 'down':[]}
         if self.castle_type == 'castle_A':
             self.connections = np.array(['C', 'C', 'F', 'C'])
-
+            self.image_fp = './resources/images/castle/castle_A_3_pieces.PNG'
         self.connections = np.roll(self.connections, shift=rotation-1)
+
+    def get_image(self):
+        return self.image_fp
+
 
     def __repr__(self):
         return 'Castle'
