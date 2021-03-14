@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from PIL import Image
 import matplotlib.pyplot as plt
 from tiles import Castle
 
@@ -111,24 +112,23 @@ class Carcassython:
     def update_game_state(self):
         raise NotImplementedError
 
-    def view_board(self):
+    def view_board(self, plot=True):
         print('- Current board visualization -')
         print(pd.DataFrame(self.cur_board))
-        # fig, ax = plt.subplots(self.cur_board)
-        # plt.plot()
-        fig, ax = plt.subplots(game.cur_board.shape[0], game.cur_board.shape[1])
-        game_board = game.cur_board
-        for i in range(game_board.shape[0]):
-            for j in range(game_board.shape[1]):
-                if pd.isnull(game_board[i][j]):
-                    img = plt.imread('./resources/images/filler.png')
-                else:
-                    tile_filepath = self.cur_board[i][j].image_fp
-                    img = plt.imread(tile_filepath)
-                ax[i][j].imshow(img)
-                ax[i][j].axis('off')
-        plt.subplots_adjust(wspace=-0.6, hspace=0)
-        plt.show()
+        if plot:
+            fig, ax = plt.subplots(game.cur_board.shape[0], game.cur_board.shape[1])
+            game_board = game.cur_board
+            for i in range(game_board.shape[0]):
+                for j in range(game_board.shape[1]):
+                    if pd.isnull(game_board[i][j]):
+                        img = Image.open('./resources/images/filler.png')
+                    else:
+                        img = Image.open(self.cur_board[i][j].image_fp)
+                        img = img.rotate(90*(self.cur_board[i][j].rotation - 1))
+                    ax[i][j].imshow(img)
+                    ax[i][j].axis('off')
+            plt.subplots_adjust(wspace=-0.7, hspace=0)
+            plt.show()
 
 
 # debugging
