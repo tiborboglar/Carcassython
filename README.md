@@ -13,3 +13,7 @@ Suppose you have `connections = ['C', 'R', 'R', 'F']`, then your tile can connec
 
 Since tiles can be rotated, where `rotation = 1` represents no rotation, `rotation = 2` represents 90º anti-clockwise rotation and so on.
 The `connections` list will consider `rotation = 1` as reference frame. 
+
+### Agent
+
+### Scoring
