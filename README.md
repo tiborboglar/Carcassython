@@ -18,4 +18,4 @@ The `connections` list will consider `rotation = 1` as reference frame.
 
 ### Scoring
 
-## Monte Carlo Tree Search
+### Monte Carlo Tree Search
