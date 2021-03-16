@@ -17,3 +17,5 @@ The `connections` list will consider `rotation = 1` as reference frame.
 ### Agent
 
 ### Scoring
+
+## Monte Carlo Tree Search
