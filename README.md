@@ -3,6 +3,10 @@ Implementation of the Carcassonne game using Python, with Tkinter as GUI interfa
 
 ## Details
 
+### Board
+
+The board is a fixed `numpy array`, with shape (71, 71)
+
 ### Tiles
 Each tile has an attribute named `connections` which is a list of size 4. Each element of this list represent a possible connection to the tile.
 
