@@ -1,5 +1,5 @@
 # Carcassython
-Implementation of the Carcassonne game using Python, with Tkinter as GUI interface 
+Implementation of the Carcassonne game using Python, with Tkinter as GUI interface (to-do)
 
 ## Details
 
